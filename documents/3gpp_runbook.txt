@@ -1,0 +1,15 @@
+3GPP TS 23.502 - Section 4.2.2: AMF Anomaly Resolution Runbook
+ERROR_SIGNATURE: High SBI Latency with reduced PDU Session Success Rate on AMF instances.
+ROOT_CAUSE: This footprint typically points to an HTTP/2 Service-Based Architecture (SBA) signaling overload or a slow database response loop from the UDM/UDR during subscriber authentication tracking.
+REMEDIATION_STEPS:
+1. Verify the N12/N8 interface connection state between the target AMF and the UDM.
+2. Check the UDM container CPU utilization limits on the Kubernetes cluster.
+3. Apply signaling throttling or traffic shaping on the AMF to prevent complete NAS signaling collapse.
+
+3GPP TS 29.244 - Section 5.2: UPF N3 Data Plane Failure Runbook
+ERROR_SIGNATURE: High Packet Drop Rate Pct with degraded SMF PDU establishment rates.
+ROOT_CAUSE: This signature points to User Plane Function (UPF) N3 GTP-U interface transport saturation or hardware packet processing engine errors.
+REMEDIATION_STEPS:
+1. Inspect the physical or virtual N3 interface interfaces for interface flapping or drops.
+2. Check GTP-U path management echo requests to verify user-plane transport continuity.
+3. Orchestrate a scale-out deployment to spin up an auxiliary UPF instance via Helm/Kubernetes and shift subscriber traffic.

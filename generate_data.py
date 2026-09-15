@@ -7,7 +7,6 @@ def create_5g_core_data():
     start_date = datetime(2026, 9, 14)
     hours = 24 * 7  # 1 week of data
     
-    # We will track three different network functions / deployment instances
     nf_instances = ['AMF_01', 'SMF_01', 'UPF_01']
     data_list = []
     
@@ -16,21 +15,16 @@ def create_5g_core_data():
             timestamp = start_date + timedelta(hours=h)
             hour_of_day = timestamp.hour
             
-            # Baseline metrics with time-of-day traffic waves
             traffic_factor = np.sin((hour_of_day - 6) * np.pi / 12)
-            
             pdu_success_rate = np.clip(99.5 - np.random.exponential(0.1), 90.0, 100.0)
             sbi_latency_ms = np.clip(12 + 5 * traffic_factor + np.random.normal(0, 2), 5, 45)
             packet_drop_rate = np.clip(np.random.exponential(0.02), 0.0, 2.0)
             
-            # Inject distinct 5GC failure signatures that copycats won't understand
+            # Inject distinct 5GC failure signatures
             if nf == 'AMF_01' and h in range(48, 54):
-                # Simulated HTTP/2 SBI Signaling overload (e.g., UDM/UDR slow response)
                 sbi_latency_ms = np.random.uniform(120.0, 250.0) 
                 pdu_success_rate = np.random.uniform(82.0, 88.0)
-                
             elif nf == 'UPF_01' and h in range(120, 126):
-                # Simulated User Plane interface saturation / N3-GTP-U interface errors
                 packet_drop_rate = np.random.uniform(4.5, 9.5)
                 pdu_success_rate = np.random.uniform(92.0, 95.0)
                 

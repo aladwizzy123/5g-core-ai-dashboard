@@ -3,3 +3,8 @@ pandas
 numpy
 scikit-learn
 plotly
+langchain
+langchain-community
+chromadb
+sentence-transformers
+torchvision
